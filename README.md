@@ -1,2 +1,2 @@
-# mofron-event-mousedrag
-mouse-drag event for mofron component
+# mofron-event-drag
+drag event for mofron component
