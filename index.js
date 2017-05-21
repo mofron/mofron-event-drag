@@ -25,22 +25,75 @@ mofron.event.Drag = class extends mofron.Event {
     
     eventConts (tgt_dom) {
         try {
-            var evt_func = this.handler();
             tgt_dom.attr({
                 draggable : "true"
             });
-            tgt_dom.getRawDom().addEventListener('drag',function() {
+            
+            this.addType('drag');
+            for (let tp_idx in this.m_type) {
+                this.addType(tp_idx);
+            }
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    addType (type) {
+        try {
+            if ('string' !== typeof type) {
+                if ( ('object' === typeof type) && (undefined !== type[0]) ) {
+                    for (let tp_idx in type) {
+                        this.addType(type[tp_idx]);
+                    }
+                    return;
+                }
+                throw new Error('invalid parameter');
+            }
+            if ( ('drag'      !== type) &&
+                 ('dragend'   !== type) &&
+                 ('dragenter' !== type) &&
+                 ('dragexit'  !== type) &&
+                 ('dragleave' !== type) &&
+                 ('dragstart' !== type) ) {
+                throw new Error('invalid parameter');
+            }
+            if (undefined === this.m_type) {
+                this.m_type = {};
+            }
+            this.m_type[type] = null;
+            if (null === this.target()) {
+                return;
+            }
+            this.setType(type);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    setType (tp) {
+        try {
+            if ('string' !== typeof tp) {
+                throw new Error('invalid parameter');
+            }
+            let evt  = this;
+            let fnc  = () => {
                 try {
-                    if (null != evt_func[0]) {
-                        evt_func[0](evt_func[1]);
+                    let evt_cb = evt.handler();
+                    if (null != evt_cb[0]) {
+                        evt_cb[0](evt.target(), tp, evt_cb[1]);
                     }
                 } catch (e) {
                     console.error(e.stack);
                     throw e;
                 }
-            },false);
-            
-            
+            };
+            this.target().eventTgt().getRawDom().addEventListener(
+                tp,
+                fnc,
+                false
+            );
         } catch (e) {
             console.error(e.stack);
             throw e;
