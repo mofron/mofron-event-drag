@@ -25,10 +25,6 @@ mofron.event.Drag = class extends mofron.Event {
     
     eventConts (tgt_dom) {
         try {
-            tgt_dom.attr({
-                draggable : "true"
-            });
-            
             this.addType('drag');
             for (let tp_idx in this.m_type) {
                 this.addType(tp_idx);
@@ -54,6 +50,7 @@ mofron.event.Drag = class extends mofron.Event {
                  ('dragend'   !== type) &&
                  ('dragenter' !== type) &&
                  ('dragexit'  !== type) &&
+                 ('dragover'  !== type) &&
                  ('dragleave' !== type) &&
                  ('dragstart' !== type) ) {
                 throw new Error('invalid parameter');

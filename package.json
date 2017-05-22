@@ -1,6 +1,6 @@
 {
   "name": "mofron-event-drag",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "drag event for mofron component",
   "main": "index.js",
   "scripts": {
