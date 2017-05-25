@@ -25,9 +25,8 @@ mofron.event.Drag = class extends mofron.Event {
     
     eventConts (tgt_dom) {
         try {
-            this.addType('drag');
             for (let tp_idx in this.m_type) {
-                this.addType(tp_idx);
+                this.setType(tp_idx);
             }
         } catch (e) {
             console.error(e.stack);
@@ -123,7 +122,7 @@ mofron.event.Drag = class extends mofron.Event {
                     if (null === evt_type) {
                         return;
                     }
-                    let evt_cb = evt.handler();;
+                    let evt_cb = evt.handler();
                     for (let tp_idx in evt_type) {
                         if (tp === evt_type[tp_idx]) {
                             if (null != evt_cb[0]) {
