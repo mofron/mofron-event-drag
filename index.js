@@ -2,12 +2,12 @@
  * @file mofron-event-mousedrag/index.js
  * @author simpart
  */
-
+let mf = require('mofron');
 /**
  * @class mofron.event.Drag
  * @brief drag event for mofron component
  */
-mofron.event.Drag = class extends mofron.Event {
+mf.event.Drag = class extends mf.Event {
     
     constructor (fnc, prm) {
         try {
@@ -15,7 +15,7 @@ mofron.event.Drag = class extends mofron.Event {
             this.name('Drag');
             this.prmOpt(
                 ('function' === typeof fnc) ?
-                {'handler' : new mofron.Param(fnc, prm)} : fnc
+                {'handler' : new mf.Param(fnc, prm)} : fnc
             );
         } catch (e) {
             console.error(e.stack);
@@ -136,9 +136,7 @@ mofron.event.Drag = class extends mofron.Event {
                 }
             };
             this.target().eventTgt().getRawDom().addEventListener(
-                tp,
-                fnc,
-                false
+                tp, fnc, false
             );
         } catch (e) {
             console.error(e.stack);
