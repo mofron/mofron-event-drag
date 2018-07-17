@@ -23,7 +23,7 @@ mf.event.Drag = class extends mf.Event {
         }
     }
     
-    eventConts (tgt_dom) {
+    contents (tgt_dom) {
         try {
             for (let tp_idx in this.m_type) {
                 this.setType(tp_idx);
@@ -58,7 +58,7 @@ mf.event.Drag = class extends mf.Event {
                 this.m_type = {};
             }
             this.m_type[type] = true;
-            if (null === this.target()) {
+            if (null === this.component()) {
                 return;
             }
             this.setType(type);
@@ -126,7 +126,7 @@ mf.event.Drag = class extends mf.Event {
                     for (let tp_idx in evt_type) {
                         if (tp === evt_type[tp_idx]) {
                             if (null != evt_cb[0]) {
-                                evt_cb[0](evt.target(), tp, evt_cb[1]);
+                                evt_cb[0](evt.component(), tp, evt_cb[1]);
                             }
                         }
                     }
@@ -135,7 +135,7 @@ mf.event.Drag = class extends mf.Event {
                     throw e;
                 }
             };
-            this.target().eventTgt().getRawDom().addEventListener(
+            this.component().eventTgt().getRawDom().addEventListener(
                 tp, fnc, false
             );
         } catch (e) {
@@ -144,5 +144,5 @@ mf.event.Drag = class extends mf.Event {
         }
     }
 }
-mofron.event.drag = {};
 module.exports = mofron.event.Drag;
+/* end of file */
