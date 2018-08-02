@@ -9,14 +9,12 @@ let mf = require('mofron');
  */
 mf.event.Drag = class extends mf.Event {
     
-    constructor (fnc, prm) {
+    constructor (po, p2, p3) {
         try {
             super();
             this.name('Drag');
-            this.prmOpt(
-                ('function' === typeof fnc) ?
-                {'handler' : new mf.Param(fnc, prm)} : fnc
-            );
+            this.prmMap('handler', 'handlerPrm', 'type');
+            this.prmOpt(po, p2, p3);
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -25,119 +23,43 @@ mf.event.Drag = class extends mf.Event {
     
     contents (tgt_dom) {
         try {
-            for (let tp_idx in this.m_type) {
-                this.setType(tp_idx);
-            }
-        } catch (e) {
-            console.error(e.stack);
-            throw e;
-        }
-    }
-    
-    addType (type) {
-        try {
-            if ('string' !== typeof type) {
-                if ( ('object' === typeof type) && (undefined !== type[0]) ) {
-                    for (let tp_idx in type) {
-                        this.addType(type[tp_idx]);
-                    }
-                    return;
-                }
-                throw new Error('invalid parameter');
-            }
-            if ( ('drag'      !== type) &&
-                 ('dragend'   !== type) &&
-                 ('dragenter' !== type) &&
-                 ('dragexit'  !== type) &&
-                 ('dragover'  !== type) &&
-                 ('dragleave' !== type) &&
-                 ('dragstart' !== type) ) {
-                throw new Error('invalid parameter');
-            }
-            if (undefined === this.m_type) {
-                this.m_type = {};
-            }
-            this.m_type[type] = true;
-            if (null === this.component()) {
-                return;
-            }
-            this.setType(type);
-        } catch (e) {
-            console.error(e.stack);
-            throw e;
-        }
-    }
-    
-    delType (tp) {
-        try {
-            if ('string' !== typeof tp) {
-                if ( ('object' === typeof tp) && (undefined !== tp[0]) ) {
-                    for (let tp_idx in tp) {
-                        this.delType(tp[tp_idx]);
-                    }
-                    return;
-                }
-                throw new Error('invalid parameter');
-            }
-            if (undefined === this.m_type) {
-                this.m_type = {};
-            }
-            if (undefined === this.m_type[tp]) {
-                return;
-            }
-            this.m_type[tp] = false;
-        } catch (e) {
-            console.error(e.stack);
-            throw e;
-        }
-    }
-    
-    getType () {
-        try {
-            if (undefined === this.m_type) {
-                return null;
-            }
-            let ret_val = new Array();
-            for (let tp_idx in this.m_type) {
-                if (true === this.m_type[tp_idx]) {
-                    ret_val.push(tp_idx);
-                }
-            }
-            return (0 === ret_val.length) ? null : ret_val;
-        } catch (e) {
-            console.error(e.stack);
-            throw e;
-        }
-    }
-    
-    setType (tp) {
-        try {
-            if ('string' !== typeof tp) {
-                throw new Error('invalid parameter');
-            }
-            let evt  = this;
+            let evt_obj = this;
             let fnc  = () => {
                 try {
-                    let evt_type = evt.getType();
-                    if (null === evt_type) {
-                        return;
-                    }
-                    let evt_cb = evt.handler();
-                    for (let tp_idx in evt_type) {
-                        if (tp === evt_type[tp_idx]) {
-                            if (null != evt_cb[0]) {
-                                evt_cb[0](evt.component(), tp, evt_cb[1]);
-                            }
-                        }
-                    }
+                    let evt_cb = evt_obj.handler();
+                    evt_cb[0](evt_obj.component(), evt_cb[1]);
                 } catch (e) {
                     console.error(e.stack);
                     throw e;
                 }
             };
             this.component().eventTgt().getRawDom().addEventListener(
-                tp, fnc, false
+                this.type(), fnc, false
             );
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    type (prm) {
+        try {
+            if (undefined === prm) {
+                /* getter */
+                return (undefined === this.m_type) ? null : this.m_type;
+            }
+            /* setter */
+            if ( ('string' !== typeof prm) ||
+                 ( ('drag'      !== prm) &&
+                   ('dragend'   !== prm) &&
+                   ('dragenter' !== prm) &&
+                   ('dragexit'  !== prm) &&
+                   ('dragover'  !== prm) &&
+                   ('dragleave' !== prm) &&
+                   ('dragstart' !== prm) ) ) {
+                throw new Error('invalid parameter');
+            }
+            this.m_type = prm;
         } catch (e) {
             console.error(e.stack);
             throw e;
