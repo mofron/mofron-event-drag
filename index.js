@@ -2,19 +2,19 @@
  * @file mofron-event-mousedrag/index.js
  * @author simpart
  */
-let mf = require('mofron');
+const mf = require('mofron');
 /**
  * @class mofron.event.Drag
  * @brief drag event for mofron component
  */
 mf.event.Drag = class extends mf.Event {
     
-    constructor (po, p2, p3) {
+    constructor (po, p2) {
         try {
             super();
             this.name('Drag');
-            this.prmMap('handler', 'handlerPrm', 'type');
-            this.prmOpt(po, p2, p3);
+            this.prmMap('handler', 'type');
+            this.prmOpt(po, p2);
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -24,17 +24,17 @@ mf.event.Drag = class extends mf.Event {
     contents (tgt_dom) {
         try {
             let evt_obj = this;
-            let fnc  = () => {
-                try {
-                    let evt_cb = evt_obj.handler();
-                    evt_cb[0](evt_obj.component(), evt_cb[1]);
-                } catch (e) {
-                    console.error(e.stack);
-                    throw e;
-                }
-            };
-            this.component().eventTgt().getRawDom().addEventListener(
-                this.type(), fnc, false
+            tgt_dom.getRawDom().addEventListener(
+                this.type(),
+                () => {
+                    try {
+                        evt_obj.execHandler();
+                    } catch (e) {
+                        console.error(e.stack);
+                        throw e;
+                    }
+                },
+                false
             );
         } catch (e) {
             console.error(e.stack);
