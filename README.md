@@ -3,7 +3,7 @@
 
 drag event for mofron
 
-<handler parameter><br>
+[handler parameter]<br>
 - component: event target component object<br>
 - event: "mousemove" event object<br>
 - mixed: user specified parameter<br>
