@@ -1,37 +1,61 @@
 /**
- * @file mofron-event-mousedrag/index.js
+ * @file mofron-event-drag/index.js
+ * @brief drag event for mofron
+ *        <handler parameter><br>
+ *         - component: event target component object<br>
+ *         - event: "mousemove" event object<br>
+ *         - mixed: user specified parameter<br>
  * @author simpart
  */
-const mf = require('mofron');
-/**
- * @class mofron.event.Drag
- * @brief drag event for mofron component
- */
+const mf = require("mofron");
+
 mf.event.Drag = class extends mf.Event {
     
-    constructor (po, p2) {
+    /**
+     * initialize drag event
+     * 
+     * @param (array/object) array: event function [function,parameter]
+     *                       object: event option
+     * @type private
+     */
+    constructor (po) {
         try {
             super();
-            this.name('Drag');
-            this.prmMap('handler', 'type');
-            this.prmOpt(po, p2);
+            this.name("Drag");
+            this.prmMap("handler");
+            this.prmOpt(po);
         } catch (e) {
             console.error(e.stack);
             throw e;
         }
     }
     
+    /**
+     * drag event contents
+     * 
+     * @param (component) event target component
+     * @type private
+     */
     contents (tgt_dom) {
         try {
             let evt_obj = this;
             tgt_dom.getRawDom().addEventListener(
-                this.type(),
-                () => {
-                    try {
-                        evt_obj.execHandler();
-                    } catch (e) {
-                        console.error(e.stack);
-                        throw e;
+                "mousedown",
+                (evt) => { evt_obj.is_mdown(true); },
+                false
+            );
+            
+            tgt_dom.getRawDom().addEventListener(
+                "mouseup",
+                (evt) => { evt_obj.is_mdown(false); },
+                false
+            );
+            
+            tgt_dom.getRawDom().addEventListener(
+                "mousemove",
+                (evt) => {
+                    if (true === evt_obj.is_mdown()) {
+                        evt_obj.execHandler(evt);
                     }
                 },
                 false
@@ -42,24 +66,16 @@ mf.event.Drag = class extends mf.Event {
         }
     }
     
-    type (prm) {
+    /**
+     * current mouse status
+     *
+     * @param (boolean) true: mouse down
+     *                  false: mouse up
+     * @type private
+     */
+    is_mdown (prm) {
         try {
-            if (undefined === prm) {
-                /* getter */
-                return (undefined === this.m_type) ? null : this.m_type;
-            }
-            /* setter */
-            if ( ('string' !== typeof prm) ||
-                 ( ('drag'      !== prm) &&
-                   ('dragend'   !== prm) &&
-                   ('dragenter' !== prm) &&
-                   ('dragexit'  !== prm) &&
-                   ('dragover'  !== prm) &&
-                   ('dragleave' !== prm) &&
-                   ('dragstart' !== prm) ) ) {
-                throw new Error('invalid parameter');
-            }
-            this.m_type = prm;
+            return this.member("is_mdown", "boolean", prm, false);
         } catch (e) {
             console.error(e.stack);
             throw e;

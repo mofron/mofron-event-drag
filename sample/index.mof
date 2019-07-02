@@ -1,0 +1,15 @@
+<require>
+    <tag module="mofron-comp-frame">Frame</tag>
+    <tag module="mofron-event-drag">Drag</tag>
+</require>
+
+<script run=init>
+let evt = (p1,p2) => {
+    p1.style({
+        "left": (p2.pageX - 50) + "px",
+        "top": (p2.pageY - 50) + "px",
+    });
+};
+</script>
+
+<Frame event=Drag(evt) style="position:relative;"></Frame>
