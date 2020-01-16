@@ -1,29 +1,31 @@
 /**
  * @file mofron-event-drag/index.js
  * @brief drag event for mofron
- *        <handler parameter><br>
- *         - component: event target component object<br>
- *         - event: "mousemove" event object<br>
- *         - mixed: user specified parameter<br>
- * @author simpart
+ * ## event function parameter
+ *  - component: event target component object
+ *  - event: "mousemove" event object
+ *  - mixed: user specified parameter
+ * @license MIT
  */
-const mf = require("mofron");
 
-mf.event.Drag = class extends mf.Event {
-    
+module.exports = class extends mofron.class.Event {
     /**
      * initialize drag event
      * 
-     * @param (array/object) array: event function [function,parameter]
-     *                       object: event option
+     * @param (mixed) listener parameter
+     *                key-value: event config
      * @type private
      */
-    constructor (po) {
+    constructor (p1) {
         try {
             super();
             this.name("Drag");
-            this.prmMap("handler");
-            this.prmOpt(po);
+            /* init config */
+	    this.confmng().add("is_mdown", { type: "boolean", init: false });
+	    /* set config */
+	    if (0 < arguments.length) {
+                this.config(p1);
+            }
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -55,7 +57,7 @@ mf.event.Drag = class extends mf.Event {
                 "mousemove",
                 (evt) => {
                     if (true === evt_obj.is_mdown()) {
-                        evt_obj.execHandler(evt);
+                        evt_obj.execListener(evt);
                     }
                 },
                 false
@@ -75,12 +77,11 @@ mf.event.Drag = class extends mf.Event {
      */
     is_mdown (prm) {
         try {
-            return this.member("is_mdown", "boolean", prm, false);
+            return this.confmng("is_mdown", prm);
         } catch (e) {
             console.error(e.stack);
             throw e;
         }
     }
 }
-module.exports = mofron.event.Drag;
 /* end of file */
