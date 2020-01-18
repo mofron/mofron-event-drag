@@ -12,19 +12,19 @@ module.exports = class extends mofron.class.Event {
     /**
      * initialize drag event
      * 
-     * @param (mixed) listener parameter
+     * @param (mixed) short-form parameter
      *                key-value: event config
      * @type private
      */
-    constructor (p1) {
+    constructor (prm) {
         try {
             super();
             this.name("Drag");
             /* init config */
 	    this.confmng().add("is_mdown", { type: "boolean", init: false });
 	    /* set config */
-	    if (0 < arguments.length) {
-                this.config(p1);
+	    if (undefined !== prm) {
+                this.config(prm);
             }
         } catch (e) {
             console.error(e.stack);
