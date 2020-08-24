@@ -1,7 +1,7 @@
-<require>
+<setting>
     <tag load="mofron-comp-frame">Frame</tag>
     <tag load="mofron-event-drag">Drag</tag>
-</require>
+</setting>
 
 <script name=devt run=init>
     devt1.style({

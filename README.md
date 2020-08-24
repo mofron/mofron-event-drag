@@ -19,18 +19,24 @@ npm install mofron mofron-event-drag
 
 # Sample
 ```html
-<require>
+<setting>
     <tag load="mofron-comp-frame">Frame</tag>
     <tag load="mofron-event-drag">Drag</tag>
-</require>
+</setting>
 
 <script name=devt run=init>
     devt1.style({
         "left": (devt2.pageX - 50) + "px",
-        "top": (devt2.pageY - 50) + "px",
+        "top": (devt2.pageY - 50) + "px"
     });
 </script>
 
-<Frame event=Drag(devt) style="position:relative;">
+<Frame event=Drag:@devt style="position:relative;">
 </Frame>
 ```
+
+# Parameter
+
+| Short<br>Form | Parameter Name | Type | Description |
+|:-------------:|:---------------|:-----|:------------|
+

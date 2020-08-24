@@ -19,7 +19,7 @@ module.exports = class extends mofron.class.Event {
     constructor (prm) {
         try {
             super();
-            this.name("Drag");
+            this.modname("Drag");
             /* init config */
 	    this.confmng().add("is_mdown", { type: "boolean", init: false });
 	    /* set config */
